@@ -1,0 +1,342 @@
+---
+title: "Leetcode Breakdown: Two Sum and General Leetcode Question in JS"
+description: "Dive into Leetcode's infamous Two Sum in JavaScript. This is a solid introduction to how one should approach not only Two Sum but all LeetCode styled questions, especially in coding interviews."
+image: "../../public/blogs/leetcode.png"
+publishedAt: "2024-03-05"
+updatedAt: "2024-03-05"
+author: "Gene"
+isPublished: true
+tags:
+- Leetcode
+- JavaScript
+---
+
+When you think of Leetcode, a lot of people immediately think of the Two Sum problem. It is a fairly easy problem and a good introduction to these type of problem solving questions you would see in a general Leetcode question. For those of you who do not know what Two Sum is, here is the question:
+
+## Two Sum
+
+[Two Sum LeetCode Link](https://leetcode.com/problems/two-sum/description/)
+
+> Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to target.
+> You may assume that each input would have exactly one solution, and you may not use the same element twice.
+> You can return the answer in any order.
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target){
+  // Solution here
+}
+```
+
+If you are lost and don't know where to start, do not be discouraged. The difficulty of Leetcode questions are relative to the concepts of the problem and solutions. Of course this will require some knowledge of Data Structure. I will not go too in depth on the intricacies of the ones we will use, so I will provide some resources if you require some high level details.
+
+### 0. Breakdown
+
+As a step 0, it is always important to approach these types of questions by understanding `what we have (inputs)` and `what we are looking for (outputs)`. This step may seem obvious however sometimes we might just start trying to come up with a solution without really understanding the question. By doing this step, not only do we give ourselves direction, if we are given this question in an actual interview, we show the interviewer that we can actually breakdown the questions they give us.
+
+**Inputs: Array of integers, integer**
+
+So we have an array of integers `nums` and an integer `target`. Since we are doing this in JavaScript, the typing we would use is `number`
+
+So we have an array of numbers `nums` and a number `target`
+
+**Inputs: Array of numbers, number**
+
+**Outputs: Array**
+
+Using the array of numbers and a target number we are looking for two numbers in this array such that it adds up to the target. However make sure you read the problem all the way through. We want to return the indices where we found these numbers in an array form. In an interview, it is important we clarify what we are looking for rather than making that easy assumption.
+
+Lets visualize this with an example.
+
+**Example 1**
+```html
+Input: nums = [2,7,11,15], target = 9
+Output: [0, 1]
+```
+
+Given an array of the numbers 2, 7, 11, and 15 as well as a target of 9, we want to find two numbers that add up to the target.
+
+Here we see 2 and 7 add up to 9. **Remember** we want to return its indices, so what we return is **[0, 1]** as they correspond to the indices of 2 and 7.
+
+**Constraints**
+
+These are all given restraints from the original problem
+
+```html
+2 <= nums.length <= 10^4
+-10^9 <= nums[i] <= 10^9
+-10^9 <= target <= 10^9
+```
+
+**Assumptions**
+```html
+1. Each input would have exactly one solution
+2. You may not use the same element twice
+```
+
+**Base Cases**
+
+The output requires 2 unique elements to add up to target, so if the input size is less than 2 we know it would never work.
+
+```html
+Input: nums = [], target = 10
+Output: []
+
+Input: nums = [1], target = 2
+Output: []
+```
+
+
+### 1. Brute Force Approach: Immediate Intuition
+
+Now that we have all the necessary information to begin coming up with solutions. Before we start trying to brainstorm what data structure or Computer Science topic we want to use, let's just look at the problem at face value using the first example.
+
+**Example 1**
+```html
+Input: nums = [2,7,11,15], target = 9
+```
+
+We know that we are looking for a pair of index numbers for our solution. These indices must correspond to the numbers that sum of to 9. Maybe we can try finding every pair in this `nums` array and checking their sum.
+
+(2,7)
+(2,11)
+(2,15)
+
+(7,11)
+(7,15)
+
+(11,15)
+
+This is all the possible unique pairings of numbers. From this list of pairings, we can see that 2 and 7 are the values we need that add up to 9. However, remember we are looking for the indices, so our solution would be `[0,1]`, the position they are found in `nums`.
+
+This seems like a good start.
+
+> Before we continue, I will preface that this is not the most optimal solution. In a coding interview, you would not begin coding a sub-optimal solution. However, that is not to say we shouldn't be talking about this solution in an interview. In fact, it is encouraged to discuss some sub-optimal solutions you find given you give yourself time to do so. As long as you are show casing your thought process and hopefully finding the optimal solution during this process.
+
+```javascript 
+var twoSum = function(nums, target){
+  // Base Case
+  if(nums.length<2) return []
+
+  // Find every unique pair
+  for(let i = 0;i<nums.length-1;i++){
+    for(let j = i+1;j<nums.length;j++){
+      // Only one solution, if we find our pair we can just return it here
+      if(nums[i] + nums[j] == target) return [i,j];
+    }
+  }
+  // If we don't find a pair that adds up to target, no solution (Which is still one solution)
+  return [];
+}
+```
+
+**Complexity**
+
+> This is the most important factor in determining optimallity so it is important you understand Time Complexity, which is how fast your solution will run, and Space Complexity, which is how much space your solution takes in memory.
+
+**Time Complexity**: O(N^2)
+
+Explanation: N is the length of `nums`. For every value of `nums`, we look for another value to create a unique pair.
+
+(2,7) (2,11) (2,15) **N-1**
+
+(7,11) (7,15) **N-2**
+
+(11,15) **N-3**
+
+(N-1) + (N-2) + (N-3)
+
+(N-1) + (N-2) +..+ (N- N-1) => N(n-1)/2 - N
+
+(N-1) + (N-2) +..+ (N- N-1) => **O(N^2)**
+
+
+This is equivalent to a general [Summation Formula of Natural Numbers](https://www.cuemath.com/sum-of-natural-numbers-formula).
+
+[Cheatsheet for Big O Notation](https://www.bigocheatsheet.com/)
+
+**Space Complexity**: O(1)
+
+We are not using any other data structures or memory usages outsie of the given nums, so we have constant **O(1)** memory usage.
+
+### 2. Misguided Optimal Approach 
+
+I will explain the important of using different examples when trying to find solutions. 
+
+**Example 1**
+```html
+Input: nums = [2,7,11,15], target = 9
+```
+
+Here is the example we have been using till now. You may have been tempted to look at this solution and see that it's in order. Since it is inorder, maybe we can try a [2 Pointer](https://www.geeksforgeeks.org/two-pointers-technique/) approach.
+
+Since the values are increasing we can have Left (L) and Right (R) pointers pointing to opposite ends of this array and try to close in on our target value.
+
+```html
+2   7   11    15
+L              R
+Sum = 17
+
+2   7   11    15
+L       R
+Sum = 13
+
+2   7   11    15
+L   R
+Sum = 9
+
+```
+
+If the sum of our pointer values are larger than the target, then we move R to the left because we see that the value of R will only get smaller.
+
+If the sum of our pointer values are smaller than the target, then we move L to the right because we see that the vaue of L will only get bigger.
+
+If you caught the problem already, then good job. If not, then you have to remember from our Assumptions that we never said `nums` is strictly in-order.
+
+```html
+Input: nums = [8 3 2], target = 5
+
+8   3   2
+L       R
+Sum = 10
+
+8   3   2
+L   R
+Sum = 11
+```
+
+As we can see from this new example, if we were to assume the input was in order, then our solution would not work. We move the R pointer to the left hoping to get a smaller value to get closer to the target value of 5.
+
+**Salvagable**
+
+This does not mean we cannot use this solution to find an answer. Since a sorted input `nums` is not guaranteed, we only need to **sort the array** first. In fact, this solution ends up being more optimal than the initial solution we found earlier.
+
+> The purpose of this section is to make sure our thought process is not tied to the solution of a single example. As long as we can stick with our constraints, assumptions, and base cases, we can move forward with correct solutions.
+
+```javascript
+var twoSum = function(nums, target){
+  // Base Case
+  if(nums.length<2) return []
+
+  // Sorts in ascending order
+  nums.sort((a,b) => a-b)
+
+  // 2 Pointer Technique, now that nums is sorted
+  let [L, R] = [0, nums.length-1];
+  while(L<R){
+    let sum = nums[L] + nums[R];
+    if(sum == target) return [L, R];
+    else if(sum < target) L++;
+    else R--;
+  }
+
+  return [];
+}
+```
+
+**Time Complexity**: O(Nlog(N))
+
+Sorting has **O(Nlog(N))** as the average time complexity. Of course that depends on the browser, because each browser and their different versions use different sorting algorithms, but that is the average time so O(Nlog(N)) is the benchmark we typically use for the default sort.
+
+The 2 Pointer Technique will go iterate through every element at least once, so it will have an **O(N)** time complexity.
+
+O(Nlog(N) + N)
+
+O(Nlog(N))
+
+**Space Complexity**: O(1)
+
+Again we did not use any other datastructure so we remain constant with memory usage.
+
+### 3. Optimal Approach
+
+Obviously, some solutions are harder to find than others. Let's restructure the way we are approaching this question. We are iterating through different pairs hoping to find a pair solution that matches our target. However we can take advantage of our target in another way.
+
+```html
+Input: nums = [3,15,7,11], target = 10
+```
+Let's look at **3**. Since our target is 10, then wouldn't it make sense for us to to look for is a 7. We have only seen 3, so we do not know that 7 is in the array just yet. So let's save the fact that we have seen 3 at index 0 using a **Map** data structure that we will call `indexMap`.
+
+Let's look at **15**. It's complimentary pair is -5 which we have yet to see so we just say we have seen value 15 at index 1.
+
+Let's look at **7**. It's complimentary pair is 3. We check `indexMap` and see that we have already seen it at index 0. This means we have found our answer.
+
+**Map vs Object**
+
+In our need of using a Map-like data structure for this particular solution. The usage of either one works just fine. Finding and retrieving values in either are found in O(1) time so using one over the other is not more efficient.
+
+> In an interview, it is still important to denote why you would use one over the other, and when you should. You might want to use a Map if you need to store non-string keys such as pointers or objects. You might want to use an Object to reduce overhead or simply because it is easier to implement, as long as your keys are fine being stringified. State your intentions and reasons clearly and you should be fine.
+
+```javascript
+// Map
+const indexMap = new Map()
+index.contains(key)
+index.set(key, value)
+
+// Object
+const indexMap = {};
+indexMap.has(key)
+indexMap[key] = value
+```
+
+**Solution**
+
+Let's turn our thought process into code. For the solution we will be using an **Object** as a substitute for our map as it is easier to implement and we are only working with numbers. Stringifying them when we store them as keys is fine.
+
+```javascript
+var twoSum = function(nums, target){
+  // Base Case
+  if(nums.length<2) return []
+
+  // Object/Map to store value/index pair
+  const indexMap = {}
+
+  for(let index = 0;index<nums.length;index++){
+    // Current Value
+    let currValue = nums[index];
+    // Complimentary Value we want to check if we have seen before
+    let compValue = target - currValue
+
+    if(!indexMap.has(compValue)){
+      indexMap[currValue] = index;
+    }else{
+      // We found our pair
+      return [indexMap[compValue], index];
+    }
+  }
+
+  return [];
+}
+
+```
+
+**Time Complexity**: O(N)
+
+We are simply traversing the input array `nums` of length **N**. Any operation done in the map/object will be of constant time O(1) which will not affect the overall complexity.
+
+**Space Complexity**: O(N)
+
+Unlike the other solutions, we are using extra memory. We will, at most, store all the values of `nums` and their indices in the map/object which is of length **N**.
+
+
+### 4. Conclusion
+
+Leetcode questions take practice. Do not be discouraged if you do not get a question the first time. However, also do not just blindly start answering the question. As we have done in this article, we want to breakdown the question and split it into a systematic approach that we can incorporate into most of these questions.
+
+1. Clarify Inputs(what we have) and Outputs(what we're looking for)
+2. Establish constraints and assumptions.
+3. Use short/varied examples to identify both base cases and general approaches.
+4. Once you identify an somewhat optimal approach, then you can start coding.
+5. If you need to, make adjustments to optimize.
+
+If you would like more practice, especially ones that are foundation to a majority of leetcode questions, I highly recommend going through the ones picked out by NeetCode.
+
+[Neetcode](https://neetcode.io/)
+
+
+
+
