@@ -440,6 +440,6 @@ export const DribbbleIcon = ({ className, ...rest }) => {
 
 export const PersonalIcon = ({ className, ...rest }) => {
   return (
-    <span class="text-accent dark:text-accentDark"><bold><i>P</i></bold></span>
+    <span className="text-accent dark:text-accentDark"><bold><i>P</i></bold></span>
   );
 };

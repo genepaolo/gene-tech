@@ -11,12 +11,12 @@ const RecentPosts = ({ blogs }) => {
         <h2 className="w-fit inline-block font-bold capitalize text-2xl md:text-4xl text-dark dark:text-light">
           Recent
         </h2>
-        <Link
+        <a
           href="/categories/all"
           className="inline-block font-medium text-accent dark:text-accentDark underline underline-offset-2      text-base md:text-lg"
         >
           view all
-        </Link>
+        </a>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-rows-2 gap-16 mt-16">

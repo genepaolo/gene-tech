@@ -1,6 +1,6 @@
 # Gene-Tech
 
-![Website Social Banner](https://ibb.co/hsJcScL)
+![Website Social Banner](https://i.ibb.co/zsTFzFQ/social-banner.png)
 
 ## Description
 Just a blog made in Next.js to discuss tech guides and global delopments for fun.
